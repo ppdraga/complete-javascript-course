@@ -1,4 +1,4 @@
-var budgetComtroller = (function() {
+var budgetCocmtroller = (function() {
 
     var x = 23;
 
@@ -17,3 +17,8 @@ var budgetComtroller = (function() {
 var UIController = (function() {
     // code
 })();
+
+var controller = (function(budgetCtrl, UICtrl) {
+
+
+})(budgetCocmtroller, UIController);
