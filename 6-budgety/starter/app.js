@@ -24,6 +24,30 @@ var budgetCocmtroller = (function() {
             inc: 0
         },
     };
+
+    return {
+        addItem: function(type, des, val) {
+            var newItem, allItems, ID;
+            allItems = data.allItems[type];
+            if (allItems.length > 0) {
+                ID = allItems[allItems.length - 1].id + 1;
+            } else {
+                ID = 0;
+            }
+            if (type === 'exp') {
+                newItem = new Expense(ID, des, val);
+            } else if (type === 'inc') {
+                newItem = new Income(ID, des, val);
+            }
+
+            data.allItems[type].push(newItem);
+
+            return newItem;
+        },
+        testing: function() {
+            console.log(data);
+        },
+    };
 })();
 
 // UI CONTROLLER
@@ -39,7 +63,7 @@ var UIController = (function() {
         getinput: function() {
             return {
                 type : document.querySelector(DOMStrings.inputType).value,
-                description : document.querySelector(DOMStrings.inputType).value,
+                description : document.querySelector(DOMStrings.inputDescription).value,
                 value : document.querySelector(DOMStrings.inputValue).value
             };
         },
@@ -65,9 +89,13 @@ var controller = (function(budgetCtrl, UICtrl) {
     var ctrlAddItem = function() {
         console.log('add item');
         // получить данные о доходах-расходах из dom
-        var input = UICtrl.getinput();
+        var input, newItem;
+        input = UICtrl.getinput();
         console.log(input);
+
         //add item to budget controller
+        newItem = budgetCocmtroller.addItem(input.type, input.description, input.value);
+        console.log(newItem);
 
         //add item to UI
 
