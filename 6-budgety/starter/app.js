@@ -66,7 +66,7 @@ var UIController = (function() {
             return {
                 type : document.querySelector(DOMStrings.inputType).value,
                 description : document.querySelector(DOMStrings.inputDescription).value,
-                value : document.querySelector(DOMStrings.inputValue).value
+                value : parseFloat(document.querySelector(DOMStrings.inputValue).value)
             };
         },
         addListItem: function(obj, type) {
@@ -105,6 +105,15 @@ var UIController = (function() {
             // Inser HTML to DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
+        clearFields: function() {
+            var fields;
+            fields = document.querySelectorAll(DOMStrings.inputDescription + ', ' + DOMStrings.inputValue);
+            //document.querySelectorAll('.add__description, .add__value')
+            fields.forEach(function(current, index, array) {
+                current.value = "";
+            });
+            fields[0].focus();
+        },
         getDOMStrings: function() {
             return DOMStrings;
         }
@@ -124,6 +133,8 @@ var controller = (function(budgetCtrl, UICtrl) {
         });
     };
 
+    
+
     var ctrlAddItem = function() {
         console.log('add item');
         // получить данные о доходах-расходах из dom
@@ -131,16 +142,34 @@ var controller = (function(budgetCtrl, UICtrl) {
         input = UICtrl.getinput();
         console.log(input);
 
+        //input control
+        if (input.description.trim() === '' || isNaN(input.value) || input.value <= 0) {
+            return
+        }
+
         //add item to budget controller
         newItem = budgetCocmtroller.addItem(input.type, input.description, input.value);
         console.log(newItem);
 
         //add item to UI
         UIController.addListItem(newItem, input.type);
+
+        //claer input fields
+        UIController.clearFields();
+
+        // calculate and update budget
+        updateBudget();
+
+    };
+
+    var updateBudget = function() {
         //calc the budget
+        console.log('update budget func');
+        // return the budget
 
         // display the budget on the UI
-    }
+
+    };
 
     return {
         init: function() {
